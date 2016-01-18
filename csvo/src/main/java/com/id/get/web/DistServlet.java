@@ -56,6 +56,17 @@ public class DistServlet{
 	 * <br>历 史: (版本) 作者 时间 注释
 	 * @return
 	 */
+	@RequestMapping(value = "/require.uz")
+	public String requireView() {
+		return "requireView";
+	}
+	/**
+	 * 
+	 * <br>描 述：跳转短信查询页面
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @return
+	 */
 	@RequestMapping(value = "/test.uz")
 	public String test() {
 		return "index";
