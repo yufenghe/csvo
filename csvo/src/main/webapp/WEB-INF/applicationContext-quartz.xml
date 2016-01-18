@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+    <task:annotation-driven />
+    <task:executor id="threadPool" pool-size="20" queue-capacity="200" rejection-policy="CALLER_RUNS"/>
+
+	<bean id="threadPool"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"><!-- 核心线程数 -->
+		<property name="corePoolSize" value="20" /><!-- 最大线程数 -->
+		<property name="maxPoolSize" value="200" /><!-- 队列最大长度 -->
+		<property name="queueCapacity" value="100" /><!-- 线程池维护线程所允许的空闲时间 -->
+		<property name="keepAliveSeconds" value="300" />
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+		</property>
+	</bean>
+
+<!-- ================================== 重新加载任务 start ================================ -->
+<!-- 	<bean id="reloadConfigjob" class="org.springframework.scheduling.quartz.JobDetailBean"> -->
+<!-- 		<property name="jobClass"> -->
+<!-- 			<value>com.uuzz.lottery.sms.service.impl.ReloadConfigFileTask</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="reloadCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
+<!-- 		<property name="jobDetail"> -->
+<!-- 			<ref bean="reloadConfigjob" /> -->
+<!-- 		</property> -->
+<!-- 		<property name="cronExpression"> -->
+<!-- 				<value>0 0/5 0-23 * * ?</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> -->
+<!-- 		<property name="triggers"> -->
+<!-- 			<list> -->
+<!-- 				<ref bean="reloadCronTrigger" /> -->
+<!-- 				<ref bean="cleanDbCacheCronTrigger" /> -->
+<!-- 				<ref bean="emaySmsMtReportCronTrigger" /> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+</beans>

@@ -1,0 +1,26 @@
+1、Jackson格式输出时将日期字段格式化输出，可以使用如下两种形式
+	1>@JsonSerialize(using=TimestampSerializer.class)
+	2>@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+2、目前系统集成了mybatis查询和jdbc查询
+3、bootstrap结合x-editable插件实现列表的可编辑
+	1>在column元素添加formatter，如：
+		function fmtSpId(value, row, index) {
+			return "<a href='#' class='spId' data-type='text' data-pk='" + row.seqId + "' data-placement='right'>" + value + "</a>";
+		}
+	2>在bootstrapTable的onPostBody事件中针对标签元素<a>进行渲染策略设置，如：
+		$('.spId').editable({
+			       url: '${ctx}/change.uz',
+			       validate: function(value) {
+			            if($.trim(value) == '') {
+			                return 'This field is required';
+			            }
+			       },
+			       send: 'auto', 
+			       success: function(response, newValue) {
+			            if(response.success) return response.result;
+			       },
+			       ajaxOptions: {
+			            type: 'post',
+			            dataType: 'json'
+			       }
+		});

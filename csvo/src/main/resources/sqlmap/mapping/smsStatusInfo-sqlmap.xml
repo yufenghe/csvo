@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+	<typeAlias type="com.id.get.model.SmsStatusInfo" alias="smsStatusInfo"/>
+	
+	<resultMap id="SmsStatus" class="smsStatusInfo">
+		<result column="SYSCODE" property="sysCode" jdbcType="VARCHAR"/>
+		<result column="SENDTIME" property="sendTime" jdbcType="DATETIME"/>
+		<result column="SPID" property="spId" jdbcType="VARCHAR"/>
+		<result column="SERVERIP" property="serverIp" jdbcType="VARCHAR"/>
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+		<result column="TYPE" property="type" jdbcType="VARCHAR"/>
+		<result column="SPSENDTIME" property="spSendTime" jdbcType="DATETIME"/>
+		<result column="STATE" property="state" jdbcType="VARCHAR"/>
+		<result column="SMSTYPE" property="smsType" jdbcType="VARCHAR"/>
+		<result column="SEQID" property="seqId" jdbcType="VARCHAR"/>
+		<result column="UPDATETIME" property="updateTime" jdbcType="DATETIME"/>
+		<result column="CONTENT" property="content" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!--查询指定登录名的登录账户(查询所有字段)-->
+	<select id="selectSmsStatusInfo" parameterClass="java.util.Map" resultMap="SmsStatus">
+		<![CDATA[
+		SELECT T.SYSCODE,T.SENDTIME,T.SPID,T.SERVERIP,T.MOBILE,T.TYPE,T.TOTALPART,T.SMSTYPE,
+			T.SEQID,T.CONTENT,P.STATE,P.SPSENDTIME,P.UPDATETIME,P.SPMTNUMBER 
+		FROM(
+		(SELECT SYSCODE,SENDTIME,SPID,SERVERIP,MOBILE,TYPE,TOTALPART,1 AS SMSTYPE,SPMTID AS SEQID,SENDCONTENT AS CONTENT 
+			FROM SMS_DETAIL_INFO
+		) 
+		UNION ALL 
+		(
+		SELECT SYSCODE,SENDTIME,SPID,SERVERIP,MOBILE,2 AS TYPE,1 AS TOTALPART,2 AS SMSTYPE,SMSID AS SEQID,CHECKCODE AS CONTENT 
+		FROM SMS_VOICE_DETAIL_INFO
+		)
+		) T 
+		LEFT JOIN SMS_MT_REPORT P ON P.SPMTID=T.SEQID AND P.SPID=T.SPID
+		WHERE T.SENDTIME>=#start# AND T.SENDTIME<=DATE_ADD(#end#, INTERVAL 1 DAY)
+		]]>
+		<dynamic>
+		    <isNotEmpty prepend="and" property="phone">
+		        T.MOBILE=#phone#
+		    </isNotEmpty>
+	    </dynamic>
+	    <![CDATA[ORDER BY T.SENDTIME DESC LIMIT #startIndex#,#pageSize#]]>
+	</select>
+</sqlMap>
