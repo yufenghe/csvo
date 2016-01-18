@@ -1,6 +1,0 @@
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('emay', '43016305749114208', '2016-1-13 16:48:54', '2016-1-13 16:50:00', '13552948028', NULL, 'EM:104');
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('mandao', '564687', '2009-10-19 13:01:36', '2016-1-13 17:10:49', '15388650501', '62891', 'DELIVRD');
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('mandao', '420937', '2009-10-19 13:01:42', '2016-1-13 17:10:49', '15321858155', '62891', 'DELIVRD');
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('emay', '43016305749114208', '2016-1-13 16:48:54', '2016-1-13 16:50:00', '13552948028', NULL, 'EM:104');
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('mandao', '564687', '2009-10-19 13:01:36', '2016-1-13 17:10:49', '15388650501', '62891', 'DELIVRD');
-INSERT INTO `sms_mt_report` (`spid`, `spmtid`, `spsendtime`, `updatetime`, `mobile`, `spmtnumber`, `state`) VALUES ('mandao', '420937', '2009-10-19 13:01:42', '2016-1-13 17:10:49', '15321858155', '62891', 'DELIVRD');
