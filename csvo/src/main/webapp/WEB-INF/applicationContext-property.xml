@@ -27,5 +27,43 @@
            <property name="encoding" value="UTF-8"/>
            <property name="reloadingStrategy"><ref bean="strategy" /></property>
      </bean>
+     <bean id="redisClientConfig" class="org.apache.commons.configuration.PropertiesConfiguration">
+           <constructor-arg index="0" value="property/redisclient.properties"/>
+           <property name="encoding" value="UTF-8"/>
+           <property name="reloadingStrategy"><ref bean="strategy" /></property>
+     </bean>
     <!-- 敏感词筛选  -->
+    
+<!--     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"> -->
+<!--         <property name="locations"> -->
+<!--             <list> -->
+<!--                 <value>classpath*:application.properties</value> -->
+<!--             </list> -->
+<!--         </property> -->
+<!--     </bean> -->
+<!--     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"> -->
+<!--         <property name="properties" ref="configProperties" /> -->
+<!--     </bean>     -->
+    
+    
+<!--     <bean id="messageSource" -->
+<!--           class="org.springframework.context.support.ReloadableResourceBundleMessageSource"> -->
+<!--         <property name="fallbackToSystemLocale"> -->
+<!--             <value>false</value> -->
+<!--         </property> -->
+<!--         <property name="basenames"> -->
+<!--             <list> -->
+<!--                 <value>classpath:configs</value> -->
+<!--             </list> -->
+<!--         </property> -->
+<!--         <property name="defaultEncoding" value="UTF-8"/> -->
+        <!--默认为false，这样当Spring在ResourceBundle中找不到messageKey的话，就抛出NoSuchMessageException，把它设置为True，则找不到不会抛出异常，而是使用messageKey作为返回值。-->
+<!--         <property name="useCodeAsDefaultMessage" value="true"/> -->
+        <!--
+            Default is "-1", indicating to cache forever.
+            A value of "0" will check the last-modified timestamp of the file on every message access.
+            Do not set to "0" in a production environment!
+        -->
+<!--         <property name="cacheSeconds" value="30"/> -->
+<!--     </bean> -->
 </beans>

@@ -2,14 +2,14 @@
 <web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 	<display-name>csvo</display-name>
 	<!-- 加载bean容器-->
-<!-- 	<context-param> -->
-<!--         <param-name>contextConfigLocation</param-name> -->
-<!--         <param-value>classpath:beans.xml</param-value> -->
-<!--     </context-param>   -->
+	<context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext-config.xml</param-value>
+    </context-param>  
 	
-<!-- 	<listener>         -->
-<!--         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
-<!--     </listener> -->
+	<listener>        
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 	 <!--处理因使用内省API而导致的内存泄漏问题-->
     <listener>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
