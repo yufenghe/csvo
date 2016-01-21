@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- 控制台输出 -->
+	<appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<!--服务器端日志  -->
+	<appender name="serverLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>../logs/idg/com_idget_servlet.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>../logs/idg/%d{yyyyMMdd}/com_idget_servlet_%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %msg%n</pattern>
+		</layout>
+	</appender>
+	<!-- 服务功能日志 -->
+	<appender name="serviceLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>../logs/idg/com_idget_service.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>../logs/idg/%d{yyyyMMdd}/com_idget_service_%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<!--请求响应日志  -->
+	<appender name="messageLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>../logs/idg/com_idget_message.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>../logs/idg/%d{yyyyMMdd}/com_idget_message_%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>200MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<!-- 设置异步日志 -->
+	<appender name ="asyncServerLog" class= "ch.qos.logback.classic.AsyncAppender">  
+		<discardingThreshold >0</discardingThreshold>  
+		<queueSize>256</queueSize>  
+		<appender-ref ref ="serverLog"/>  
+	</appender>
+	<appender name ="asyncServiceLog" class= "ch.qos.logback.classic.AsyncAppender">  
+		<discardingThreshold >0</discardingThreshold>  
+		<queueSize>256</queueSize>  
+		<appender-ref ref ="serviceLog"/>  
+	</appender>
+	<appender name ="asyncMessageLog" class= "ch.qos.logback.classic.AsyncAppender">  
+		<discardingThreshold >0</discardingThreshold>  
+		<queueSize>256</queueSize>  
+		<appender-ref ref ="messageLog"/>  
+	</appender>
+	<!-- 设置日志级别以及包含路径 -->
+	<logger name="com.uuzz.utils.logs.server" additivity="false">  
+		<level value="DEBUG"></level>
+<!-- 		<appender-ref ref="asyncServerLog" /> -->
+		
+		<appender-ref ref="consoleLog" />
+<!-- 		 -->
+	</logger>
+	<!-- 设置日志级别以及包含路径 -->
+	<logger name="com.uuzz.lottery.inceptor" additivity="false">  
+		<level value="DEBUG"></level>
+<!-- 		<appender-ref ref="asyncServerLog" /> -->
+		
+		<appender-ref ref="consoleLog" />
+<!-- 		 -->
+	</logger>
+	
+	<logger name="com.uuzz.utils.logs.service" additivity="false">  
+		<level value="DEBUG"></level>
+<!-- 		<appender-ref ref="asyncServiceLog" /> -->
+		
+		<appender-ref ref="consoleLog" />
+<!-- 		 -->
+	</logger>
+	
+	<logger name="msgLog" additivity="false">  
+		<level value="DEBUG"></level>
+<!-- 		<appender-ref ref="asyncMessageLog" /> -->
+		<appender-ref ref="consoleLog" />
+	</logger>
+	
+	<root level="debug">
+		<appender-ref ref="consoleLog"/>
+	</root>
+</configuration>

@@ -1,4 +1,4 @@
-package com.id.get.model;
+package com.id.get.redis.domain;
 
 /**
  * 

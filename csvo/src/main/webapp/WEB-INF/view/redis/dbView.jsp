@@ -37,50 +37,45 @@
                 <div class="nav-canvas">
                     <div class="nav-sm nav nav-stacked">
                     </div>
-                    <ul class="nav nav-pills nav-stacked main-menu">
+                    <ul class="nav nav-pills nav-stacked main-menu" id="dbview">
                         <li class="nav-header">
-							<select id="type" class="selectpicker show-tick" data-size="5">
-<!-- 								<option>科幻</option> -->
-<!-- 								<option>剧情</option> -->
-<!-- 								<option>犯罪</option> -->
-<!-- 								<option>西部</option> -->
-<!-- 								<option>爱情</option> -->
+							<select id="selectServer" class="selectpicker" data-size="5">
 							</select>
                         </li>
                         <li class="nav-header">DBS</li>
-                        <li><a class="ajax-link" href="index.html"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="ui.html"><i class="glyphicon glyphicon-eye-open"></i><span> UI Features</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="form.html"><i
-                                    class="glyphicon glyphicon-edit"></i><span> Forms</span></a></li>
-                        <li><a class="ajax-link" href="chart.html"><i class="glyphicon glyphicon-list-alt"></i><span> Charts</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="typography.html"><i class="glyphicon glyphicon-font"></i><span> Typography</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-picture"></i><span> Gallery</span></a>
-                        </li>
-                        <li class="nav-header hidden-md">Sample Section</li>
-                        <li><a class="ajax-link" href="table.html"><i
-                                    class="glyphicon glyphicon-align-justify"></i><span> Tables</span></a></li>
-                        <li class="accordion">
-                            <a href="#"><i class="glyphicon glyphicon-plus"></i><span> Accordion Menu</span></a>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Child Menu 1</a></li>
-                                <li><a href="#">Child Menu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a class="ajax-link" href="calendar.html"><i class="glyphicon glyphicon-calendar"></i><span> Calendar</span></a>
-                        </li>
-                        <li><a class="ajax-link" href="grid.html"><i
-                                    class="glyphicon glyphicon-th"></i><span> Grid</span></a></li>
-                        <li><a href="tour.html"><i class="glyphicon glyphicon-globe"></i><span> Tour</span></a></li>
-                        <li><a class="ajax-link" href="icon.html"><i
-                                    class="glyphicon glyphicon-star"></i><span> Icons</span></a></li>
-                        <li><a href="error.html"><i class="glyphicon glyphicon-ban-circle"></i><span> Error Page</span></a>
-                        </li>
-                        <li><a href="login.html"><i class="glyphicon glyphicon-lock"></i><span> Login Page</span></a>
-                        </li>
+<!--                         <li><a class="ajax-link" href="index.html"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="ui.html"><i class="glyphicon glyphicon-eye-open"></i><span> UI Features</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="form.html"><i -->
+<!--                                     class="glyphicon glyphicon-edit"></i><span> Forms</span></a></li> -->
+<!--                         <li><a class="ajax-link" href="chart.html"><i class="glyphicon glyphicon-list-alt"></i><span> Charts</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="typography.html"><i class="glyphicon glyphicon-font"></i><span> Typography</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="gallery.html"><i class="glyphicon glyphicon-picture"></i><span> Gallery</span></a> -->
+<!--                         </li> -->
+<!--                         <li class="nav-header hidden-md">Sample Section</li> -->
+<!--                         <li><a class="ajax-link" href="table.html"><i -->
+<!--                                     class="glyphicon glyphicon-align-justify"></i><span> Tables</span></a></li> -->
+<!--                         <li class="accordion"> -->
+<!--                             <a href="#"><i class="glyphicon glyphicon-plus"></i><span> Accordion Menu</span></a> -->
+<!--                             <ul class="nav nav-pills nav-stacked"> -->
+<!--                                 <li><a href="#">Child Menu 1</a></li> -->
+<!--                                 <li><a href="#">Child Menu 2</a></li> -->
+<!--                             </ul> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="calendar.html"><i class="glyphicon glyphicon-calendar"></i><span> Calendar</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a class="ajax-link" href="grid.html"><i -->
+<!--                                     class="glyphicon glyphicon-th"></i><span> Grid</span></a></li> -->
+<!--                         <li><a href="tour.html"><i class="glyphicon glyphicon-globe"></i><span> Tour</span></a></li> -->
+<!--                         <li><a class="ajax-link" href="icon.html"><i -->
+<!--                                     class="glyphicon glyphicon-star"></i><span> Icons</span></a></li> -->
+<!--                         <li><a href="error.html"><i class="glyphicon glyphicon-ban-circle"></i><span> Error Page</span></a> -->
+<!--                         </li> -->
+<!--                         <li><a href="login.html"><i class="glyphicon glyphicon-lock"></i><span> Login Page</span></a> -->
+<!--                         </li> -->
                     </ul>
                     <label id="for-is-ajax" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>
                 </div>
@@ -159,47 +154,61 @@
 <%-- <script type="text/javascript" src="${ctx}/static/bootstrap/x-editable/js/bootstrap-editable.min.js"></script> --%>
 <script src="${ctx}/static/bootstrap/select/js/bootstrap-select.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
+function loadDB(id) {
+	$.post('${ctx}/redis/showdb',{id:id}, function(data) {
+		if(!data || data.length == 0) {
+			return false;
+		}
+		
+		var tempHtml = "";
+		$.each(data, function(i, n) {
+			tempHtml += '<li><a class="ajax-link" id="' + n.id + '" href="javascript:query(' + n.id + ')"><i class="glyphicon glyphicon-home"></i><span> ' + n.name + '</span></a>';
+		});
+		
+		$('#dbview').append(tempHtml);
+	});
+}
 $(function () {
 // 	$.fn.editable.defaults.mode = 'popup'; 
 
-	$('.selectpicker').selectpicker({noneSelectedText:'SELECT SERVER'});
-	
+	$('#selectServer').on('change', function () {
+		var id = $('#selectServer').val();
+		loadDB(id);
+	});
+	$.post('${ctx}/redis/serverInfo',{},function(data) {
+		if(!data || data.length == 0) {
+			$('#selectServer').selectpicker({noneSelectedText:'SELECT SERVER'});
+			return false;
+		}
+		
+		var tempAjax = "";
+		$.each(data,function(i,n){
+             tempAjax += "<option value='"+n.id +"'>"+n.name+"</option>";
+        });
+        $("#selectServer").append(tempAjax);    
+        //更新内容刷新到相应的位置
+        $('#selectServer').selectpicker('render');
+        $('#selectServer').selectpicker('refresh');
+        loadDB($('#selectServer').selectpicker('val'));
+	});
 	
 	var columns = [
-	   {field:'seqId', title:'编号', width:100, halign:'center'},      
-	   {field:'sysCode', title:'业务系统代码', width:90, halign:'center'},            
-	   {field:'spId', title:'服务提供商', width:90, halign:'center'},            
-	   {field:'serverIp', title:'服务器IP', width:90, halign:'center'},            
-	   {field:'mobile', title:'手机号', width:60, halign:'center'},            
-	   {field:'content', title:'内容', halign:'center'},            
-	   {field:'state', title:'发送状态', width:80, halign:'center'},            
-	   {field:'type', title:'发送类型', width:80, halign:'center'},            
-	   {field:'sendTime', title:'请求时间', width:100, halign:'center'},            
-	   {field:'spSendTime', title:'发送时间', width:90, halign:'center'},            
-	   {field:'spmtNumber', title:'下行特服号', width:90, halign:'center'},            
-	   {field:'smsType', title:'短信类型', width:80, halign:'center', align:'center'}           
+	   {field:'key', title:'KEY', width:100, halign:'center'},      
+	   {field:'type', title:'类型', width:90, halign:'center'}          
     ];
 	$('#smsTable').bootstrapTable({
 		  method: 'get',
-		  url: '${ctx}/query.uz',
+		  url: '${ctx}/redis/showkeys.uz',
 		  dataType: "json",
 		  striped: true,	 						//使表格带有条纹
-		  pageSize: 10,
-		  pageNumber: 1,
-		  pageList: [10, 20, 50, 100, 200],
 		  columns:columns,
 		  silent: true,
 		  singleSelect: true,						//只能选择一条记录
 		  cache:false,
-		  sidePagination: "server",					//表格分页的从服务端查询
 		  queryParams: queryParams, 				//查询参数
 		  queryParamsType: "limit", 				//参数格式,发送标准的RESTFul类型的参数请求
 		  local:'zh-CN',
-		  pagination: true,							//在表格底部显示分页工具栏
-		  paginationVAlign:'bottom',
-		  paginationHAlign:'right',
-		  paginationDetailHAlign:'left',
+		  pagination: false,							//在表格底部显示分页工具栏
 		  formatLoadingMessage: function () {
 		    return "请稍等，正在加载中...";
 		  },
@@ -210,71 +219,19 @@ $(function () {
 		    $('#smsTable').bootstrapTable('removeAll');
 		  },
 		  onPostBody:function() {
-// 			  $('.spId').editable({
-// 			       url: '${ctx}/change.uz',
-// 			       validate: function(value) {
-// 			            if($.trim(value) == '') {
-// 			                return 'This field is required';
-// 			            }
-// 			       },
-// 			       send: 'auto', 
-// 			       success: function(response, newValue) {
-// 			            if(response.success) return response.result;
-// 			       },
-// 			       ajaxOptions: {
-// 			            type: 'post',
-// 			            dataType: 'json'
-// 			       }
-// 			  });
 		  }
 		});
   });
   
 function queryParams(params) {
-	var options = $('#smsTable').bootstrapTable('getOptions');
-// 	var currentPage = options.pageNumber ? options.pageNumber : 1;
-	var pageSize = options.pageSize;
-	var queryParam = {'currentPage':1};
-	if(params) {
-		pageSize = params.limit;
-		var start = $('#start').val();
-		var end = $('#end').val();
-		queryParam['start'] = start;
-		queryParam['end'] = end;
-		queryParam['phone'] = $('#phone').val();
-	}
-	
-	queryParam['pageSize'] = pageSize;
+	var queryParam = {'id':'', 'db':''};
 	return queryParam;
 }
 
-function query() {
-	var options = $('#smsTable').bootstrapTable('getOptions');
-	var currentPage = options.pageNumber ? options.pageNumber : 1;
-	var queryParam = {'currentPage':currentPage};
-	var pageSize = options.pageSize;
-	var start = $('#start').val();
-	var end = $('#end').val();
-	if(!start) {
-		$('#start').focus();
-		return false;
-	}
-	if(!end) {
-		$('#end').focus();
-		return false;
-	}
-	var phone = $('#phone').val();
-	var reg = new RegExp(/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]){1})+\d{8})$/); 
-	if(phone && !reg.test(phone)) 
-	{ 
-		$('#phone').focus(); 
-	    return false; 
-	}
-	
-	queryParam['phone'] = phone;
-	queryParam['start'] = start;
-	queryParam['end'] = end;
-	queryParam['pageSize'] = pageSize;
+function query(db) {
+	alert(db)
+	var id = $('#selectServer').selectpicker('val');
+	var queryParam = {id:id, db:db};
 	$('#smsTable').bootstrapTable('refresh', {query:queryParam});
 }
 
