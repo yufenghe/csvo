@@ -28,15 +28,18 @@
 	  http://www.springframework.org/schema/task/spring-task-3.0.xsd
       ">
 
-<!-- 	<import resource="applicationContext-property.xml"/> -->
-<!-- 	<import resource="applicationContext-datasource.xml"/> -->
-<!-- 	<import resource="applicationContext-quartz.xml"/> -->
-<!-- 	<import resource="applicationContext-transaction.xml"/> -->
-	
 	<!--主要作用于@Controller激活该模式下面是一种简写形式,它会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter,是spring MVC为@Controllers分发请求所必须的   -->  
 	<!-- 使用默认的注解映射 -->
 	<!-- content-negotiation-manager="contentNegotiationManager" -->
-	<mvc:annotation-driven  />
+	<mvc:annotation-driven  conversion-service="conversionService"/>
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">    
+        <property name="converters">    
+            <list>    
+                <bean class="com.id.get.util.fmt.DateConverter" />    
+            </list>    
+        </property>    
+    </bean>  
 
 	<!-- 自动扫描controller包中的控制器 -->
 	<context:component-scan base-package="com.id.get.**.web"  use-default-filters="false">

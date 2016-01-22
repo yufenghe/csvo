@@ -562,4 +562,27 @@ public final class DateUtil {
 	public static Date getYesterdayzEndTime(){
 		return getSomeDayEndTime(new Date(), -1);
 	}
+	
+	public static Date formateStringToDate(String dateString) {
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.setLenient(false);
+		sdf.applyPattern(DATE_DASH_FORMAT);
+		Date date = null;
+		try {
+			date = sdf.parse(dateString);
+		} catch (ParseException e) {
+			try {
+				sdf.applyPattern(DATE_SIMPLE_FORMAT);
+				date = sdf.parse(dateString);
+			} catch (ParseException e1) {
+				try {
+					sdf.applyPattern(DATE_TIME_DASH_SECOND_FORMAT);
+					date = sdf.parse(dateString);
+				} catch (ParseException e2) {
+					LOGGER.error("不支持格式化日期：{}", new Object[]{dateString});
+				}
+			}
+		}
+		return date;
+	}
 }
