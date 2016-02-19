@@ -13,6 +13,7 @@
   		<jackson.version>1.9.13</jackson.version>
   		<jaxb.version>2.2.2</jaxb.version>
   		<mybatis.version>3.2.7</mybatis.version>
+  		<jdk.version>1.6</jdk.version>
   </properties>
   	<dependencies>
   		<dependency>
@@ -308,5 +309,43 @@
 			<artifactId>jedis</artifactId>
 			<version>2.7.2</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>2.2</version>
+		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.atlassian.maven.plugins</groupId>
+				<artifactId>maven-clover2-plugin</artifactId>
+				<version>3.0.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-compiler-plugin</artifactId> 
+				<version>3.1</version> 
+				<configuration> 
+					<source>${jdk.version}</source> 
+					<target>${jdk.version}</target> 
+					<showWarnings>true</showWarnings> 
+				</configuration> 
+			</plugin> 
+			
+			<!--自动打包发布插件 -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-release-plugin</artifactId> -->
+<!-- 				<configuration> -->
+<!-- 					<tagBase>svn://ip/uuzz/LOTTERY/Develop/tags/1.2.0/src/front</tagBase> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+		</plugins>
+		<defaultGoal>compile</defaultGoal> 
+	</build>
 </project>
