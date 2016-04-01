@@ -70,6 +70,16 @@ public class Sort {
 					shellSort();
 					break;
 				case 8:
+					int arr[] = generateArr();
+					partitionIt(arr, 0, arr.length-1, 55);
+					break;
+				case 9:
+					qucikSort();
+					break;
+				case 10:
+					quickSort2();
+					break;
+				case 11:
 					System.exit(0);
 				default:
 					System.out.println("没有该命令 " + operate);
@@ -87,6 +97,9 @@ public class Sort {
 		System.out.println(i++ + "、奇偶排序");
 		System.out.println(i++ + "、归并排序");
 		System.out.println(i++ + "、希尔排序");
+		System.out.println(i++ + "、划分数组");
+		System.out.println(i++ + "、快速排序");
+		System.out.println(i++ + "、快速排序【三数据项取中划分】");
 		System.out.println(i + "、退出");
 	}
 	
@@ -355,6 +368,12 @@ public class Sort {
 		}
 	}
 	
+	/**
+	 * 
+	 * <br>描 述：希尔排序
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 */
 	public static void shellSort() {
 		int[] arr = generateArr();
 		int h = 1;
@@ -381,5 +400,257 @@ public class Sort {
 		}
 		
 		print(arr);
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：数组划分
+	 * <br>
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param left
+	 * @param right
+	 * @param privot
+	 * @return
+	 */
+	public static int partitionIt(int[] arr, int left, int right, int privot) {
+//		int[] arr = generateArr();
+		print(arr);
+		int leftPtr = left - 1;
+		int rightPtr = right + 1;
+		while(true) {
+			while(leftPtr < right && arr[++leftPtr] < privot);
+			
+			System.out.println(leftPtr);
+			
+			while(rightPtr > left && arr[--rightPtr] > privot);
+			
+			System.out.println(rightPtr);
+			
+			if(leftPtr >= rightPtr) {
+				break;
+			}
+			else {
+				int temp;
+				temp = arr[leftPtr];
+				arr[leftPtr] = arr[rightPtr];
+				arr[rightPtr] = temp;
+			}
+		}
+		
+		print(arr);
+		return leftPtr;
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：快速排序
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 */
+	public static void qucikSort() {
+		int[] arr = generateArr();
+		recQuickSort(arr, 0, arr.length-1);
+		print(arr);
+	}
+	
+	public static void quickSort2() {
+		int[] arr = generateArr();
+		recQuickSort2(arr, 0, arr.length-1);
+		print(arr);
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：快速排序
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param left
+	 * @param right
+	 */
+	private static void recQuickSort(int[] arr, int left, int right) {
+		// 如果右边指针位置小于等于左边指标位置（即只有一个元素的情况下，表示此组排序完成），终止
+		if(right - left <= 0) {
+			return;
+		}
+		
+		// 选定数组最右边的值为枢纽值
+		int privot = arr[right];
+		// 获得以枢纽值为分界的两组有序数组分界位置
+		int part = partIt(arr, left, right, privot);
+		// 对枢纽值左边的数组进行快速排序
+		recQuickSort(arr, left, part-1);
+		// 对枢纽值右边的数组进行快速排序
+		recQuickSort(arr, part+1, right);
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：快速排序：三项数据划分法
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param left
+	 * @param right
+	 */
+	private static void recQuickSort2(int[] arr, int left, int right) {
+		int size = right - left + 1;
+//		if(size <= 3) {
+//			manulSort(arr, left, right);
+//		}
+		// 插入排序
+		if(size <= 10) {
+			insertionSort(arr, left, right);
+		}
+		else {
+			int privot = selectPrivot(arr, left, right);
+			
+			// 获得以枢纽值为分界的两组有序数组分界位置
+			int part = partIt2(arr, left, right, privot);
+			// 对枢纽值左边的数组进行快速排序
+			recQuickSort2(arr, left, part-1);
+			// 对枢纽值右边的数组进行快速排序
+			recQuickSort2(arr, part+1, right);
+		}
+	}
+	
+	private static void insertionSort(int[] arr, int left, int right) {
+		int in,out;
+		for(out = left+1; out<=right; out++) {
+			int temp = arr[out];
+			in = out;
+			while(in > left && arr[--in] >= temp) {
+				arr[in+1] = arr[in];
+//				--in;
+			}
+			
+			arr[in] = temp;
+		}
+	}
+	
+	private static void manulSort(int[] arr, int left, int right) {
+		int size = right - left + 1;
+		if(size <= 1) {
+			return;
+		}
+		else if(size == 2) {
+			if(arr[left] > arr[right]) {
+				swap(arr, left, right);
+			}
+		}
+		else {
+			if(arr[left] > arr[right - 1]) {
+				swap(arr, left, right-1);
+			}
+			if(arr[left] > arr[right]) {
+				swap(arr, left, right);
+			}
+			if(arr[right-1] > arr[right]) {
+				swap(arr, right-1, right);
+			}
+		}
+	}
+	
+	private static int selectPrivot(int[] arr, int left, int right) {
+		int mid = (left + right)/2;
+		if(arr[left] > arr[mid]) {
+			swap(arr, left, mid);
+		}
+		
+		if(arr[left] > arr[right]) {
+			swap(arr, left, right);
+		}
+		
+		if(arr[mid] > arr[right]) {
+			swap(arr, mid, right);
+		}
+		
+		swap(arr, mid, right-1);
+		
+		return arr[right-1];
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：分组划分算法
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param left
+	 * @param right
+	 * @param privot
+	 * @return
+	 */
+	public static int partIt2(int[] arr, int left, int right, int privot) {
+		// 设置左边指针初始位置
+		int leftPtr = left;
+		// 设置右边指针初始位置
+		int rightPtr = right - 1;
+		
+		while(true) {
+			while(arr[++leftPtr] < privot);
+			
+			while(arr[--rightPtr] > privot);
+			
+			if(leftPtr >= rightPtr) {
+				break;
+			}
+				
+			swap(arr, leftPtr, rightPtr);
+		}
+		
+		swap(arr, leftPtr, right-1);
+		
+		return leftPtr;
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：分组划分算法
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param left
+	 * @param right
+	 * @param privot
+	 * @return
+	 */
+	public static int partIt(int[] arr, int left, int right, int privot) {
+		// 设置左边指针初始位置
+		int leftPtr = left-1;
+		// 设置右边指针初始位置
+		int rightPtr = right;
+		
+		while(true) {
+			while(arr[++leftPtr] < privot);
+			System.out.println("循环内：" + leftPtr);
+			
+			while(rightPtr > 0 && arr[--rightPtr] > privot);
+			
+			if(leftPtr >= rightPtr) {
+				break;
+			}
+				
+			swap(arr, leftPtr, rightPtr);
+		}
+		System.out.println("循环外" + leftPtr);
+		swap(arr, leftPtr, right);
+		
+		return leftPtr;
+	}
+	
+	/**
+	 * 
+	 * <br>描 述：交换数组两个位置的值
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @param arr
+	 * @param dex1
+	 * @param dex2
+	 */
+	private static void swap(int arr[], int dex1, int dex2) {
+		arr[dex1] = arr[dex2] + 0*(arr[dex2] = arr[dex1]);
 	}
 }
