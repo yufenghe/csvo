@@ -388,7 +388,7 @@ public class Sort {
 				temp = arr[outter];
 				inner = outter;
 				
-				while(inner > h-1 && arr[inner-h] >= temp) {
+				while(inner >= h && arr[inner-h] >= temp) {
 					arr[inner] = arr[inner - h];
 					inner -= h;
 				}
