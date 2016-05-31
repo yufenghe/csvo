@@ -49,6 +49,12 @@ public class DistServlet{
 	public String showSmsView() {
 		return "distView";
 	}
+	
+	@RequestMapping(value = "/websocket.uz")
+	public String websocket() {
+		return "websocket/websocket";
+	}
+	
 	/**
 	 * 
 	 * <br>描 述：跳转短信查询页面
