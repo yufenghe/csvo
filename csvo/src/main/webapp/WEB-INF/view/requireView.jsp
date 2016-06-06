@@ -8,7 +8,7 @@
 <title>短信查询</title>
 <link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="${ctx}/static/bootstrap/table/css/bootstrap-table.min.css">
-<link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap-datepicker3.css">
 <!-- <link rel="stylesheet" href="http://cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"> -->
 <link rel="stylesheet" href="${ctx}/static/bootstrap/x-editable/css/bootstrap-editable.css">
 <link rel="stylesheet" href="${ctx}/static/css/main.css">
@@ -16,6 +16,7 @@
 	var _ctx = '${ctx}';
 </script>
 <script data-main="${ctx}/static/js/main" src="${ctx}/static/js/require.js"></script>
+<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/js/respond.min.js"></script>
 </head>
 <body>
 <!-- 	<div class=container-fluid> -->

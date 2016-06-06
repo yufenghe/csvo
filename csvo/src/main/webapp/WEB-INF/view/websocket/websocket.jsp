@@ -16,6 +16,7 @@
 <body>
 	Welcome
 	<br />
+	<input id="userid" type="text" />
 	<input id="text" type="text" />
 	<button onclick="send()">Send</button>
 	<button onclick="closeWebSocket()">Close</button>
@@ -28,7 +29,7 @@
 
 		var init = function() {
 			if ('WebSocket' in window) {
-				_websocket = new WebSocket("ws://localhost:9898/csvo/websocket");
+				_websocket = new WebSocket("ws://localhost:9898/csvo/websocket/" + document.getElementById('userid').value);
 				window._websocket = _websocket;
 			} else {
 				alert('Not support websocket');
@@ -69,6 +70,7 @@
 	//关闭连接
 	function closeWebSocket() {
 		window._websocket.close();
+		delete window._websocket;
 	};
 
 	//发送消息
@@ -76,8 +78,31 @@
 		if (!window._websocket) {
 			window.websocket();
 		}
-		var message = document.getElementById('text').value;
-		window._websocket.send(message);
+		
+		waitForSocketConnection(window._websocket, function(){
+	        console.log("message sent!!!");
+			var message = document.getElementById('text').value;
+			window._websocket.send(message);
+	    });
 	};
+	
+	// Make the function wait until the connection is made...
+	function waitForSocketConnection(socket, callback){
+	    setTimeout(
+	        function () {
+	            if (socket.readyState === 1) {
+	                console.log("Connection is made");
+	                if(callback != null){
+	                    callback();
+	                }
+	                return;
+
+	            } else {
+	                console.log("wait for connection...");
+	                waitForSocketConnection(socket, callback);
+	            }
+
+	        }, 5); // wait 5 milisecond for the connection...
+	}
 </script>
 </html>

@@ -68,10 +68,10 @@ form.bs-docs-example {
         <div class="container">
             <ul class="nav nav-pills">
             	<li><a href="${ctx}/login/init">登录</a></li>
-            	<li><a href="${ctx}/openbet/init">开通投注账号</a></li>
-            	 <li><a href="${ctx}/bet/init">即开投注</a></li>
-            	 <li><a href="${ctx}/digitalbet/init">数字彩传统足彩投注</a></li>
-            	 <li><a href="${ctx}/jcbet/init">竞彩投注</a></li>
+            	<li><a href="${ctx}/openbet/init">开通账号</a></li>
+            	 <li><a href="${ctx}/bet/init"></a></li>
+            	 <li><a href="${ctx}/digitalbet/init"></a></li>
+            	 <li><a href="${ctx}/jcbet/init"></a></li>
                 <li><a href="${ctx}/bonus/init">红包派发</a></li>
                 <li><a href="${ctx}/query/init">红包查询</a></li>
                 <li><a href="${ctx}/showmsg/init">消息查询</a></li>

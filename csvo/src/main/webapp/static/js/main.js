@@ -5,8 +5,8 @@ require.config({
         bootstrap: '../bootstrap/3.3.5/js/bootstrap.min',
         bootstraptable:'../bootstrap/table/js/bootstrap-table.min',
         bootstraptablelocal:'../bootstrap/table/local/bootstrap-table-zh-CN.min',
-        bootstrapdatetimepicker:'../bootstrap/3.3.5/js/bootstrap-datetimepicker.min',
-        bootstrapdatetimepikcerlocal:'../bootstrap/3.3.5/local/bootstrap-datetimepicker.zh-CN',
+        bootstrapdatetimepicker:'../bootstrap/3.3.5/js/bootstrap-datepicker.min',
+        bootstrapdatetimepikcerlocal:'../bootstrap/3.3.5/local/bootstrap-datepicker.zh-CN.min',
         bootstrapeditable:'../bootstrap/x-editable/js/bootstrap-editable.min'
     },
     shim: {
@@ -25,16 +25,13 @@ require(['jquery', 'bootstrap', 'bootstraptable', 'bootstraptablelocal',
 	$(function () {
 		$.fn.editable.defaults.mode = 'popup'; 
 		
-		$('.form_date').datetimepicker({
-		    language:  'zh-CN',
-		    weekStart: 1,
-		    todayBtn:  1,
-			autoclose: 1,
+		$('.form_date').datepicker({
+			language:'zh-CN',
+			autoclose:1,
+			todayBtn:'linked',
 			todayHighlight: 1,
-			startView: 2,
-			minView: 2,
-			forceParse: 0,
-			pickerPosition:'bottom-left'
+			weekStart: 1
+		}).on('changeDate', function(ev) {
 		});
 
 		

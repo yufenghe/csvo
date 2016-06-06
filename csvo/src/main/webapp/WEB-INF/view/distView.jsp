@@ -8,7 +8,7 @@
 <title>短信查询</title>
 <link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="${ctx}/static/bootstrap/table/css/bootstrap-table.min.css">
-<link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="${ctx}/static/bootstrap/3.3.5/css/bootstrap-datepicker3.css">
 <!-- <link rel="stylesheet" href="http://cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"> -->
 <link rel="stylesheet" href="${ctx}/static/bootstrap/x-editable/css/bootstrap-editable.css">
 <link rel="stylesheet" href="${ctx}/static/css/main.css">
@@ -61,10 +61,11 @@
 <script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="${ctx}/static/bootstrap/table/js/bootstrap-table.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/bootstrap/table/local/bootstrap-table-zh-CN.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/local/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/local/bootstrap-datepicker.zh-CN.min.js"></script>
 <!-- <script type="text/javascript" src="http://cdn.bootcss.com/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script> -->
 <script type="text/javascript" src="${ctx}/static/bootstrap/x-editable/js/bootstrap-editable.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/bootstrap/3.3.5/js/respond.min.js"></script>
 <script type="text/javascript">
 function fmtType(value, row, index) {
 	if(!value) return value;
@@ -93,18 +94,14 @@ function fmtSpId(value, row, index) {
 $(function () {
 	$.fn.editable.defaults.mode = 'popup'; 
 	
-	$('.form_date').datetimepicker({
-	    language:  'zh-CN',
-	    weekStart: 1,
-	    todayBtn:  1,
-		autoclose: 1,
+	$('.form_date').datepicker({
+		language:'zh-CN',
+		autoclose:1,
+		todayBtn:'linked',
 		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0,
-		pickerPosition:'bottom-left'
+		weekStart: 1
+	}).on('changeDate', function(ev) {
 	});
-
 	
 	var columns = [
 	   {field:'seqId', title:'编号', width:100, halign:'center'},      
