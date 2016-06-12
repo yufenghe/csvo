@@ -13,10 +13,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * 不可变枚举常量字典Action类
- * 
- * @author yzhou
- * @date 2011-10-22 下午4:39:38
- * @version 3.0
  */
 @Service
 public class FixedDictService {
