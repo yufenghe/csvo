@@ -5,6 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <properties>
+      	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   		<spring.version>3.2.0.RELEASE</spring.version>
   		<servletapi.version>2.0</servletapi.version>
   		<jstl.version>1.2</jstl.version>
@@ -13,7 +14,8 @@
   		<jackson.version>1.9.13</jackson.version>
   		<jaxb.version>2.2.2</jaxb.version>
   		<mybatis.version>3.2.7</mybatis.version>
-  		<jdk.version>1.6</jdk.version>
+  		<jdk.version>1.7</jdk.version>
+  		<lucene.version>4.10.4</lucene.version>
   </properties>
   	<dependencies>
   		<dependency>
@@ -336,9 +338,123 @@
 			<artifactId>Java-WebSocket</artifactId>
 			<version>1.3.0</version>
 		</dependency>
+		
+		<!-- lucence begin-->
+		
+		<dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <!-- 分词器 -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.apache.lucene</groupId> -->
+<!-- 		    <artifactId>lucene-analyzers-smartcn</artifactId> -->
+<!-- 		    <version>4.7.0</version> -->
+<!-- 		</dependency> -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        
+<!--         <dependency>   -->
+<!--             <groupId>org.apache.lucene</groupId>   -->
+<!--             <artifactId>lucene-demos</artifactId>   -->
+<!--             <version>2.4.1</version>   -->
+<!--         </dependency>   -->
+<!--         <dependency>   -->
+<!--             <groupId>org.apache.lucene</groupId>   -->
+<!--             <artifactId>lucene-solor-grandparent</artifactId>   -->
+<!--             <version>${lucene.version}</version>   -->
+<!--         </dependency>   -->
+        
+        <!-- lucence end-->
+        
+        <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi</artifactId>
+		  <version>3.9</version>
+		</dependency>
+        <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-ooxml</artifactId>
+		  <version>3.9</version>
+		</dependency>
+        <dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-ooxml-schemas</artifactId>
+		  <version>3.9</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.poi</groupId>
+		  <artifactId>poi-scratchpad</artifactId>
+		  <version>3.7</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
+<!-- 		    <plugin>   -->
+<!--             <groupId>org.apache.maven.plugins</groupId>   -->
+<!--             <artifactId>maven-compiler-plugin</artifactId>   -->
+<!--             <version>3.1</version>   -->
+<!--             <configuration>   -->
+<!--                 <source>1.6</source>   -->
+<!--                 <target>1.6</target>   -->
+<!--                 <encoding>UTF-8</encoding>   -->
+<!--             </configuration>   -->
+<!--         </plugin>   -->
+<!--         <plugin>   -->
+<!--             <groupId>org.apache.maven.plugins</groupId>   -->
+<!--             <artifactId>maven-resources-plugin</artifactId>   -->
+<!--             <version>2.4.3</version>   -->
+<!--             <configuration>   -->
+<!--                 <encoding>UTF-8</encoding>   -->
+<!--             </configuration>   -->
+<!--         </plugin>   -->
+<!--         <plugin>   -->
+<!--             <groupId>org.mortbay.jetty</groupId>   -->
+<!--             <artifactId>jetty-maven-plugin</artifactId>   -->
+<!--             <version>8.0.0.M1</version>   -->
+<!--         </plugin>   -->
+<!--         <plugin>   -->
+<!--             <groupId>org.apache.maven.plugins</groupId>   -->
+<!--             <artifactId>maven-eclipse-plugin</artifactId>   -->
+<!--             <version>2.8</version>   -->
+<!--             <configuration>   -->
+<!--                 <addVersionToProjectName>false</addVersionToProjectName>   -->
+<!--                 <useProjectReferences>false</useProjectReferences>   -->
+<!--                 <wtpmanifest>false</wtpmanifest>   -->
+<!--                 <wtpapplicationxml>true</wtpapplicationxml>   -->
+<!--                 <wtpversion>1.6</wtpversion>   -->
+<!--                 <additionalBuildcommands>   -->
+<!--                     <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>   -->
+<!--                     <buildcommand>org.eclipse.wst.common.project.facet.core.builder</buildcommand>   -->
+<!--                     <buildcommand>org.eclipse.wst.validation.validationbuilder</buildcommand>   -->
+<!--                 </additionalBuildcommands>   -->
+<!--             </configuration>   -->
+<!--         </plugin>   -->
+<!--         <plugin>   -->
+<!--             <groupId>org.apache.maven.plugins</groupId>   -->
+<!--             <artifactId>maven-war-plugin</artifactId>   -->
+<!--             <version>2.1.1</version>   -->
+<!--             <configuration>   -->
+<!--                 <warName>webapp</warName>   -->
+<!--             </configuration>   -->
+<!--         </plugin> -->
+		    
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover2-plugin</artifactId>
