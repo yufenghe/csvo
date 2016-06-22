@@ -1,6 +1,7 @@
 package com.id.get.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +19,8 @@ import com.id.get.model.ModelView;
 import com.id.get.model.Pager;
 import com.id.get.model.SmsStatusInfo;
 import com.id.get.service.ISmsService;
+import com.id.tools.lucence.Article;
+import com.id.tools.lucence.SearchManager;
 
 /**
  *
@@ -37,6 +40,9 @@ public class DistServlet{
 	
 	@Autowired
 	private ISmsService smsService;
+	
+	@Autowired
+	private SearchManager searchManager;
 
 	/**
 	 * 
@@ -156,5 +162,24 @@ public class DistServlet{
 	@RequestMapping(value = "/dashboard.uz")
 	public String dashboard() {
 		return "dashbord/index";
+	}
+	
+	
+	/**
+	 * 
+	 * <br>描 述：跳转短信查询页面
+	 * <br>作 者：yufenghe 
+	 * <br>历 史: (版本) 作者 时间 注释
+	 * @return
+	 */
+	@RequestMapping(value = "/showSearch.uz")
+	public String search() {
+		return "search";
+	}
+	
+	@RequestMapping(value = "/search.uz", method={RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public List<Article> searchResult(String key) {
+		return searchManager.searchIndex(key);
 	}
 }

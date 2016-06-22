@@ -34,4 +34,14 @@ public class Config {
 	 * 服务器授权码
 	 */
 	public static final String SERVER_AUTH = "password";
+	
+	/**
+	 * 索引源文件目录
+	 */
+	public static final String SOURCE_FILE_LOC = "source_file_loc";
+	
+	/**
+	 * 索引生成目录
+	 */
+	public static final String INDEX_TARGET_LOC = "index_target_loc";
 }

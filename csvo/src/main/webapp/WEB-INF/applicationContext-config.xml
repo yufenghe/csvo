@@ -45,4 +45,7 @@
     		</list>
     	</property>
     </bean>
+    
+	<bean id="searchManager" class="com.id.tools.lucence.SearchManager">
+    </bean>
 </beans>

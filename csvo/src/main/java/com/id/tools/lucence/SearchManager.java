@@ -15,10 +15,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
@@ -28,6 +31,8 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -44,10 +49,16 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+
+import com.id.get.constant.Config;
+import com.id.get.util.Md5;
 
 /**
  * <br>
- * 类 名: IndexManager <br>
+ * 类 名: SearchManager <br>
  * 描 述: 描述类完成的主要功能 <br>
  * 作 者: yufenghe <br>
  * 创 建： 2016年6月21日 <br>
@@ -55,30 +66,20 @@ import org.apache.poi.hwpf.usermodel.Range;
  * <br>
  * 历 史: (版本) 作者 时间 注释
  */
-public class IndexManager {
-	private static String content = "";
-
-	private static String INDEX_DIR = "D:\\Demo\\luceneIndex";
-	private static String DATA_DIR = "D:\\Demo\\luceneData";
-	private static Analyzer analyzer = null;
-	private static Directory directory = null;
-	private static IndexWriter indexWriter = null;
-
-	private static class Singleton {
-		private static IndexManager indexManager = new IndexManager();
+public class SearchManager implements InitializingBean {
+	private Logger logger = LoggerFactory.getLogger(SearchManager.class);
+	
+	@Resource
+	private PropertiesConfiguration luceneConfig; 
+	
+	public String getDataDir() {
+		return luceneConfig.getString(Config.SOURCE_FILE_LOC);
+//		return "D:\\Demo\\luceneData";
 	}
-
-	private IndexManager() {
-
-	}
-
-	/**
-	 * 创建索引管理器
-	 * 
-	 * @return 返回索引管理器对象
-	 */
-	public static IndexManager getManager() {
-		return Singleton.indexManager;
+	
+	public String getIndexDir() {
+		return luceneConfig.getString(Config.INDEX_TARGET_LOC);
+//		return "D:\\Demo\\luceneIndex";
 	}
 	
 	/**
@@ -88,7 +89,7 @@ public class IndexManager {
 	 *            当前文件目录
 	 * @return 是否成功
 	 */
-	public static boolean createIndex(String path) {
+	public boolean createIndex(String path) {
 		Date date1 = new Date();
 		List<File> fileList = getFileList(path);
 		if (fileList == null || fileList.isEmpty()) {
@@ -96,19 +97,21 @@ public class IndexManager {
 		}
 
 		try {
-			analyzer = new SmartChineseAnalyzer(Version.LUCENE_CURRENT);
-			directory = FSDirectory.open(new File(INDEX_DIR));
-
-			File indexFile = new File(INDEX_DIR);
+			Analyzer analyzer = new SmartChineseAnalyzer(Version.LUCENE_CURRENT);
+			Directory directory = FSDirectory.open(new File(getIndexDir()));
+			File indexFile = new File(getIndexDir());
 			if (!indexFile.exists()) {
 				indexFile.mkdirs();
 			}
 			IndexWriterConfig config = new IndexWriterConfig(
 					Version.LUCENE_CURRENT, analyzer);
-			indexWriter = new IndexWriter(directory, config);
+			config.setOpenMode(OpenMode.CREATE_OR_APPEND);
+			IndexWriter indexWriter = new IndexWriter(directory, config);
 
+			Md5 md5 = new Md5();
+			
 			for (File file : fileList) {
-				content = "";
+				String content = "";
 				// 获取文件后缀
 				String type = file.getName().substring(
 						file.getName().lastIndexOf(".") + 1);
@@ -128,22 +131,21 @@ public class IndexManager {
 
 				System.out.println("name :" + file.getName());
 				System.out.println("path :" + file.getPath());
-				// System.out.println("content :"+content);
-				System.out.println();
+				System.out.println("length :" + file.length());
 
 				try {
-					// analyzer = new StandardAnalyzer(Version.LUCENE_CURRENT);
-					// analyzer = new
-					// SmartChineseAnalyzer(Version.LUCENE_CURRENT);
-					// directory = FSDirectory.open(new File(INDEX_DIR));
-
 					Document document = new Document();
+					String md = md5.md5ForStr(file.getName()+file.length());
+					System.out.println("md :" + md);
+					document.add(new TextField("md", md,
+							Store.YES));
 					document.add(new TextField("filename", file.getName(),
 							Store.YES));
 					document.add(new TextField("content", content, Store.YES));
 					document.add(new TextField("path", file.getPath(),
 							Store.YES));
-					indexWriter.addDocument(document);
+//					indexWriter.addDocument(document);
+					indexWriter.updateDocument(new Term("md", md), document);
 					// closeWriter();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -152,7 +154,7 @@ public class IndexManager {
 			}
 
 			indexWriter.commit();
-			closeWriter();
+			closeWriter(indexWriter);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (Exception e) {
@@ -238,6 +240,7 @@ public class IndexManager {
 		}
 		return result;
 	}
+	
 	/**
 	 * 查找索引，返回符合条件的文件
 	 * 
@@ -245,12 +248,13 @@ public class IndexManager {
 	 *            查找的字符串
 	 * @return 符合条件的文件List
 	 */
-	public static void searchIndex(String text) {
+	public List<Article> searchIndex(String text) {
 		Date date1 = new Date();
+		List<Article> list = new ArrayList<Article>();
 		try {
-			directory = FSDirectory.open(new File(INDEX_DIR));
+			Directory directory = FSDirectory.open(new File(getIndexDir()));
 			// analyzer = new StandardAnalyzer(Version.LUCENE_CURRENT);
-			analyzer = new SmartChineseAnalyzer(Version.LUCENE_CURRENT);
+			Analyzer analyzer = new SmartChineseAnalyzer(Version.LUCENE_CURRENT);
 			DirectoryReader ireader = DirectoryReader.open(directory);
 			IndexSearcher isearcher = new IndexSearcher(ireader);
 
@@ -268,8 +272,7 @@ public class IndexManager {
 			// booleanQuery.add(query2, BooleanClause.Occur.MUST);
 			/* 多条件查询 end */
 
-			QueryParser parser = new QueryParser(Version.LUCENE_CURRENT,
-					"content", analyzer);
+			QueryParser parser = new QueryParser(Version.LUCENE_CURRENT, "content", analyzer);
 			Query query = parser.parse(text);
 
 			ScoreDoc[] hits = isearcher.search(query, null, 1000).scoreDocs;
@@ -280,31 +283,45 @@ public class IndexManager {
 			Fragmenter fragmenter = new SimpleFragmenter(100);// 设置最大片断为100
 			Highlighter highlighter = new Highlighter(formatter, score);// 高亮显示类
 			highlighter.setTextFragmenter(fragmenter);// 设置格式
+			
+			Article art = null;
 			for (int i = 0; i < hits.length; i++) {
 				Document hitDoc = isearcher.doc(hits[i].doc);
-				System.out.println("____________________________");
-
-				System.out.println(hitDoc.get("filename"));
+//				System.out.println("____________________________");
+//				System.out.println(hitDoc.get("filename"));
+//				System.out.println(hitDoc.get("path"));
+//				System.out.println("____________________________");
+				
+				art = new Article();
+				art.setMd(hitDoc.get("md"));
+				art.setFileName(hitDoc.get("filename"));
 				String content = hitDoc.get("content");
 				if (content != null) {
-					TokenStream tokenStream = analyzer.tokenStream("content",
-							new StringReader(content));
-					String str = highlighter.getBestFragment(tokenStream,
-							content);// 得到高亮显示后的内容
-					System.out.println(str);
+					TokenStream tokenStream = analyzer.tokenStream("content", new StringReader(content));
+					// 得到高亮显示后的内容
+					String str = highlighter.getBestFragment(tokenStream, content);
+//					System.out.println(str);
+					art.setContent(str);
 				}
-				System.out.println(hitDoc.get("path"));
-				System.out.println("____________________________");
+				
+				art.setPath(hitDoc.get("path"));
+				
+				list.add(art);
 			}
+			
+			
 			ireader.close();
 			directory.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		Date date2 = new Date();
-		System.out.println("查看索引-----耗时：" + (date2.getTime() - date1.getTime())
-				+ "ms\n");
+		System.out.println("查看索引-----耗时：" + (date2.getTime() - date1.getTime()) + "ms\n");
+		
+		return list;
 	}
+	
 	/**
 	 * 过滤目录下的文件
 	 * 
@@ -333,6 +350,7 @@ public class IndexManager {
 		}
 		return fileList;
 	}
+	
 	/**
 	 * 判断是否为目标文件，目前支持txt xls doc格式
 	 * 
@@ -351,7 +369,7 @@ public class IndexManager {
 		return false;
 	}
 
-	public static void closeWriter() throws Exception {
+	public static void closeWriter(IndexWriter indexWriter) throws Exception {
 		if (indexWriter != null) {
 			indexWriter.close();
 		}
@@ -373,17 +391,31 @@ public class IndexManager {
 		file.delete();
 		return true;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		boolean hasIndex = createIndex(getDataDir());
+		if(!hasIndex) {
+			logger.error("创建索引失败");
+			throw new Exception("创建索引失败");
+		}
+	}
+	
 	public static void main(String[] args) {
-		File fileIndex = new File(INDEX_DIR);
+		SearchManager manager = new SearchManager();
+		File fileIndex = new File(manager.getIndexDir());
 		if (deleteDir(fileIndex)) {
 			fileIndex.mkdir();
 		} else {
 			fileIndex.mkdir();
 		}
 
-		boolean hasIndex = createIndex(DATA_DIR);
+		boolean hasIndex = manager.createIndex(manager.getDataDir());
 		if (hasIndex) {
-			searchIndex("常用");
+			manager.searchIndex("常用");
 		}
 	}
 }
