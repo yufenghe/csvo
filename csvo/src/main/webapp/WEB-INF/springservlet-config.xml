@@ -146,6 +146,7 @@
     <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8"/>     
         <property name="viewClass" value="com.id.get.expand.freemarker.ExFreeMarkerView"/>
+<!--         <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/> -->
         <property name="suffix" value=".ftl"/>
         <property name="cache" value="true"/>
         <property name="exposeSessionAttributes" value="true"/>

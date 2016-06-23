@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.id.get.model.ModelView;
 import com.id.get.model.Pager;
@@ -181,5 +183,15 @@ public class DistServlet{
 	@ResponseBody
 	public List<Article> searchResult(String key) {
 		return searchManager.searchIndex(key);
+	}
+	
+	
+	@RequestMapping(value = "/searchResult.uz", method={RequestMethod.POST, RequestMethod.GET})
+	public String searchRe(String key, ModelMap model) {
+		List<Article> list = searchManager.searchIndex(key);
+		model.addAttribute("list", list);
+		model.addAttribute("test", "testtesttesttest");
+		model.addAttribute("CREATE_HTML", Boolean.FALSE);
+		return "result";
 	}
 }
