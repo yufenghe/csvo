@@ -18,35 +18,35 @@
 			$('div.overlay').addClass('open');
 			$.post('${ctx}/searchResult.uz',{key:$('#searchContext').val()}, function(data) {
 				$('div.overlay').removeClass('open');
-				$('#content_left').append(data);
+				$('.searchArea').empty();
+				$('.searchArea').append(data);
 			});
 		});
 	});
-	
 </script>
 </head>
 <body>
 	<div id="content_left">
-	<div id="head" class="s_down">
-		<div class="head_wrapper">
-			<div class="s_form">
-				<div class="" style="padding:4px;">
-					<form class="bs-example bs-example-form" role="form">
-				      <div class="row">
-				         <div class="col-md-4">
-				            <div class="input-group">
-				               <input type="text" id="searchContext" class="form-control">
-				               <span class="input-group-btn">
-				                  <button  id="search" class="btn btn-default" type="button">搜一搜</button>
-				               </span>
-				            </div><!-- /input-group -->
-				         </div><!-- /.col-lg-6 -->
-				      </div><!-- /.row -->
-				   </form>
+		<div id="head" class="s_down">
+			<div class="head_wrapper">
+				<div class="s_form">
+					<div class="" style="padding:4px;">
+						<form class="bs-example bs-example-form" role="form">
+					      <div class="row">
+					         <div class="col-md-4">
+					            <div class="input-group">
+					               <input type="text" id="searchContext" class="form-control">
+					               <span class="input-group-btn">
+					                  <button  id="search" class="btn btn-default" type="button">搜一搜</button>
+					               </span>
+					            </div><!-- /input-group -->
+					         </div><!-- /.col-lg-6 -->
+					      </div><!-- /.row -->
+					   </form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 		<div class="leftBlock">
 			<div class="hint_toprq_tips f13 se_common_hint" data-id="28300"
 				data-tpl="hint_toprq_tips" style="display: block;">
@@ -68,12 +68,13 @@
 				</span>
 			</div>
 		</div>
+		<div class="searchArea"></div>
 	</div>
 	<div class="overlay overlay-corner">
-	<div class="loading">
-		<img alt="加载中..." src="${ctx }/static/css/loading.gif">
+		<div class="loading">
+			<img alt="加载中..." src="${ctx }/static/css/loading.gif">
+		</div>
 	</div>
-</div>
 </body>
 
 </html>
